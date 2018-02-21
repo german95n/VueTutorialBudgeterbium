@@ -11,6 +11,6 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-#accounts-list-view {
-}
+// #accounts-list-view {
+// }
 </style>
