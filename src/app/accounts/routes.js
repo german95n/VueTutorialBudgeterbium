@@ -4,11 +4,11 @@ export default [
   {
     path: '/',
     component: components.AccountsListView,
-    name: 'accountsList'
+    name: 'accountsListView'
   },
   {
     path: '/accounts/create',
     component: components.CreateEditAccount,
-    name: 'createAccount'
+    name: 'createEditAccount'
   }
 ];
