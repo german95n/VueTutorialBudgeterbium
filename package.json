@@ -17,8 +17,10 @@
     "eslint-plugin-vue": "^4.2.2",
     "localforage": "^1.5.6",
     "localforage-startswith": "^1.4.0",
+    "moment": "^2.20.1",
     "vue": "^2.1.10",
     "vue-router": "^2.2.0",
+    "vuejs-datepicker": "^0.9.26",
     "vuex": "^2.5.0"
   },
   "devDependencies": {

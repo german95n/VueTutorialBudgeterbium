@@ -2,10 +2,12 @@
   <div id="budget-create-edit-view">
     You can create and edit budgets with me, woot!
 
-    <form class="form" @submit.prevent="processSave">
+    <router-link :to="{ name: 'budgetsList' }">View all budgets</router-link>
+
+<form class="form" @submit.prevent="processSave">
       <label for="month" class="label">Month</label>
       <p class="control">
-        <input type="text" class="input" name="month" v-model="selectedBudget.month">
+        <datepicker name="month" input-class="input" format="MMMM yyyy" v-model="selectedBudget.month"></datepicker>
       </p>
       <label for="budgeted" class="label">Budgeted amount</label>
       <p class="control">
@@ -21,6 +23,9 @@
         <p class="control">
           <button class="button is-primary">Submit</button>
         </p>
+        <p class="control">
+          <router-link :to="{ name: 'budgetsList' }"><button class="button is-link">Cancel</button></router-link>
+        </p>
       </div>
     </form>
   </div>
@@ -28,9 +33,14 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import Datepicker from 'vuejs-datepicker';
 
 export default {
   name: 'budget-create-edit-view',
+
+  components: {
+    Datepicker
+  },
 
   data: () => {
     return {
