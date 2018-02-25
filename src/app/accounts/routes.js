@@ -4,7 +4,7 @@ export default [
   {
     path: '/',
     component: components.AccountsList,
-    name: 'accountsListView'
+    name: 'accountsList'
   },
   {
     path: '/accounts/create',

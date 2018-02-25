@@ -1,4 +1,3 @@
-
 <template>
   <div id="accounts-list-view">
 
@@ -12,9 +11,6 @@
         </div>
       </div>
     </nav>
-
-
-    <router-link :to="{ name: 'budgetsList' }">View budgets</router-link>
 
     <table class="table is-bordered">
       <thead>
@@ -45,27 +41,33 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { CATEGORIES } from '../../../consts';
+
 export default {
   name: 'accounts-list-view',
+
   data () {
     return {
       categories: CATEGORIES
     };
   },
+
   mounted () {
     this.loadAccounts();
   },
+
   methods: {
     ...mapActions([
       'deleteAccount',
       'loadAccounts'
     ]),
+
     confirmDeleteAccount (account) {
       if (confirm(`Are you sure you want to delete ${account.name}?`)) {
         this.deleteAccount(account);
       }
     }
   },
+
   computed: {
     ...mapState({
       'accounts': state => state.accounts.accounts
@@ -75,4 +77,5 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+
 </style>
