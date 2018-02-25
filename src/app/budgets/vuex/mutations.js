@@ -14,7 +14,7 @@ export default {
   },
 
   CREATE_CATEGORY (state, payload) {
-    state.categories[payload.category.id] = payload.category;
+    Vue.set(state.categories, payload.category.id, payload.category);
   },
 
   UPDATE_CATEGORY (state, payload) {
