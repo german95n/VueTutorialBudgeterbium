@@ -4,7 +4,7 @@
       <li>
         <router-link :to="{ name: 'accountsList' }">Accounts</router-link>
         <ul>
-          <li v-bind:key="no-template-key" v-for="(account, key) in accounts" >
+          <li v-bind:key="key" v-for="(account, key) in accounts" >
             <router-link :to="{ name: 'updateAccount', params: { accountId: account.id } }">
               {{ account.name }} <span>${{ account.balance }}</span>
             </router-link>

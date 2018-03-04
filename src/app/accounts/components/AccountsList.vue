@@ -21,7 +21,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-bind:key="no-template-key" v-for="(account, key) in accounts" :class="{ 'is-delinquent': account.balance < 0 }">
+        <tr v-bind:key="key" v-for="(account, key) in accounts" :class="{ 'is-delinquent': account.balance < 0 }">
           <td>
             <span class="subtitle is-5">{{ account.name }}</span>
             <span class="tag is-small ">{{ categories[account.category] }}</span>

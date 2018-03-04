@@ -94,3 +94,60 @@ export const createBudgetCategory = ({ commit, dispatch, getters }, data) => {
     value: budgetCategory.budgeted
   });
 };
+
+export const updateBudgetCategory = ({ commit, dispatch, getters }, data) => {
+  let newBudget = data.budgetCategory.budgeted;
+  let oldBudget = getters.getBudgetCategoryById(data.budget.id, data.budgetCategory.id).budgeted;
+
+  if (newBudget !== oldBudget) {
+    dispatch('updateBudgetBalance', {
+      budget: data.budget,
+      param: 'budgeted',
+      value: newBudget - oldBudget
+    });
+  }
+
+  commit('UPDATE_BUDGET_CATEGORY', data);
+
+  // save using the budget in our store
+  saveBudget(getters.getBudgetById(data.budget.id));
+};
+
+export const duplicateBudget = ({ commit, dispatch, getters, state }, data) => {
+  /*
+  * Expects an existing budget object, budget, and an budget to be copied, baseBudget
+  * Duplicates all budget categories and budgeted amounts to the new budget
+   */
+  if (!(data.budget && data.baseBudget)) return Promise.reject(new Error('Incorrect data sent to duplicateBudget'));
+
+  // clone our object in case we received something from the store
+  let budget = Object.assign({}, data.budget);
+
+  // let's reset some information first
+  budget.budgeted = 0;
+  budget.budgetCategories = null;
+  // note that we don't reset the spent or income because we aren't
+  // changing any transactions, which are what determine those values
+  // but the individual category spent/income will need to be recalculated
+
+  commit('UPDATE_BUDGET', { budget: budget });
+
+  budget = getters.getBudgetById(budget.id);
+
+  if ('budgetCategories' in data.baseBudget) {
+    Object.keys(data.baseBudget.budgetCategories).forEach((key) => {
+      dispatch('createBudgetCategory', {
+        budget: budget,
+        budgetCategory: {
+          category: data.baseBudget.budgetCategories[key].category,
+          budgeted: data.baseBudget.budgetCategories[key].budgeted,
+          spent: 0 // TODO: grab this value when we have transactions!
+        }
+      });
+    });
+  }
+
+  saveBudget(budget);
+
+  return budget;
+};

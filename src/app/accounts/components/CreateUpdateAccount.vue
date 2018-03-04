@@ -23,7 +23,7 @@
           <p class="control">
             <span class="select">
               <select name="category" v-model="selectedAccount.category">
-                <option v-bind:key="no-template-key" v-for="(value, key) in categories" :value="key">{{ value }}</option>
+                <option v-bind:key="key" v-for="(value, key) in categories" :value="key">{{ value }}</option>
               </select>
             </span>
           </p>
