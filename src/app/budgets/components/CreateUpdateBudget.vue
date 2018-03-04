@@ -61,12 +61,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-bind:key="no-template-key" v-for="(bc, key) in selectedBudget.budgetCategories">
-            <td><span class="subtitle is-5">{{ getCategoryById(bc.category).name }}</span></td>
-            <td><span class="subtitle is-5">${{ bc.budgeted }}</span></td>
-            <td><span class="subtitle is-5">${{ bc.spent }}</span></td>
-            <td><span class="subtitle is-5">${{ bc.budgeted - bc.spent }}</span></td>
-          </tr>
+          <template v-for="(value, key) in selectedBudget.budgetCategories">
+            <component
+              :is="budgetCategoryComponent(value)"
+              v-bind:key="no-template-key"
+              v-model="selectedBudget.budgetCategories[key]"
+              v-on:update-budget-category="saveBudgetCategory"
+              v-on:edit-budget-category="activeBudgetCategory = value"
+            ></component>
+          </template>
           <CreateUpdateBudgetCategory v-on:add-budget-category="addBudgetCategory"></CreateUpdateBudgetCategory>
         </tbody>
         <tfoot>
@@ -90,19 +93,22 @@ import { mapActions, mapGetters } from 'vuex';
 import Datepicker from 'vuejs-datepicker';
 
 import CreateUpdateBudgetCategory from './CreateUpdateBudgetCategory';
+import BudgetCategory from './BudgetCategory';
 
 export default {
   name: 'budget-create-edit-view',
 
   components: {
     Datepicker,
-    CreateUpdateBudgetCategory
+    CreateUpdateBudgetCategory,
+    BudgetCategory
   },
 
   data: () => {
     return {
       selectedBudget: {},
-      editing: false
+      editing: false,
+      activeBudgetCategory: null
     };
   },
 
@@ -123,7 +129,8 @@ export default {
       'createBudget',
       'updateBudget',
       'loadBudgets',
-      'createBudgetCategory'
+      'createBudgetCategory',
+      'updateBudgetCategory'
     ]),
 
     resetAndGo () {
@@ -164,6 +171,21 @@ export default {
       }).then(() => {
         this.selectedBudget = Object.assign({}, this.getBudgetById(this.$route.params.budgetId));
       });
+    },
+
+    saveBudgetCategory (budgetCategory) {
+      // format it how our action expects
+      budgetCategory.category = budgetCategory.category.id;
+      this.updateBudgetCategory({
+        budget: this.selectedBudget,
+        budgetCategory: budgetCategory
+      }).then(() => {
+        this.selectedBudget = Object.assign({}, this.getBudgetById(this.$route.params.budgetId));
+      });
+    },
+
+    budgetCategoryComponent (budgetCategory) {
+      return this.activeBudgetCategory && this.activeBudgetCategory === budgetCategory ? 'create-update-budget-category' : 'budget-category';
     }
   },
 
