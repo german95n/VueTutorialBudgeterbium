@@ -24,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-bind:key="no-template-key" v-for="(budget, key) in sortedBudgets" :class="{ 'is-delinquent': false }" >
+        <tr v-bind:key="key" v-for="(budget, key) in sortedBudgets" :class="{ 'is-delinquent': false }" >
           <td>
             <span class="subtitle is-5">{{ budget.month | moment }}</span>
           </td>
