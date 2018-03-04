@@ -77,7 +77,7 @@
             <td>
               Copy entire budget from:
               <select class="select" @change="processDuplicateBudget($event.target.value)">
-                <option v-bind:key="key" v-for="(value, key) in budgets" :value="key">
+                <option v-bind:key="key" v-for="(value, key) in sortedBudgets" :value="key">
                   {{ value.month | moment }}
                 </option>
               </select>
@@ -100,6 +100,7 @@ import Datepicker from 'vuejs-datepicker';
 import CreateUpdateBudgetCategory from './CreateUpdateBudgetCategory';
 import BudgetCategory from './BudgetCategory';
 import { moment } from '../../../filters';
+import { sortObjects } from '../../../utils';
 
 export default {
   name: 'budget-create-edit-view',
@@ -201,7 +202,7 @@ export default {
     },
 
     processDuplicateBudget (budgetId) {
-      if (confirm('Are you sure you want to duplicate that budget? Doing this will overwrite all existing data for this month (transaction data will NOT be erased).')) {
+      if (confirm('Are you sure you want to duplicate this budget? Doing this will overwrite all existing data for this month (transaction data will NOT be erased).')) {
         this.duplicateBudget({
           budget: this.selectedBudget,
           baseBudget: this.getBudgetById(budgetId)
@@ -220,7 +221,11 @@ export default {
 
     ...mapState({
       'budgets': state => state.budgets.budgets
-    })
+    }),
+
+    sortedBudgets () {
+      return sortObjects(this.budgets, 'month', true);
+    }
   }
 };
 </script>
